@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome</h1>
+    <form method="POST" action="/calculate">
+        {{ form.csrf_token }}
+        <div>
+            {{ form.initial_velocity.label }}
+            {{ form.initial_velocity(size=20) }}
+            {% if form.initial_velocity.errors %}
+            <ul class="errors">
+                {% for error in form.initial_velocity.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.initial_height.label }}
+            {{ form.initial_height(size=20) }}
+            {% if form.initial_height.errors %}
+            <ul class="errors">
+                {% for error in form.initial_height.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.rad_or_deg.label }}
+            {{ form.rad_or_deg(size=1) }}
+            {% if form.rad_or_deg.errors %}
+            <ul class="errors">
+                {% for error in form.rad_or_deg.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            {{ form.launch_angle.label }}
+            {{ form.launch_angle(size=20) }}
+            {% if form.launch_angle.errors %}
+            <ul class="errors">
+                {% for error in form.launch_angle.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.submit }}
+        </div>
+    </form>
+    <div class="solutions">
+        {% if v_ox %}
+            Initial X Velocity: {{ v_ox }} m/s
+            Initial Y Velocity: {{ v_oy }} m/s
+            Time to Peak of Motion: {{ peak_time }} s
+            Height at Peak of Motion: {{ peak_height }} m
+            Total Time of Travel: {{ total_time }} s
+            Final Horizontal Distance Traveled {{ final_dist }} m
+        {% endif %}
+    </div>
+</body>
+</html>
