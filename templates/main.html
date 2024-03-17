@@ -8,6 +8,7 @@
     <h1>Welcome</h1>
     <form method="POST" action="/calculate">
         {{ form.csrf_token }}
+        <h2>Parameters and Units</h2>
         <div>
             {{ form.initial_velocity.label }}
             {{ form.initial_velocity(size=20) }}
@@ -18,7 +19,26 @@
                 {% endfor %}
             </ul>
             {% endif %}
+        {{ form.velocity_units.label }}
+            {{ form.velocity_units(size=1) }}
+            {% if form.velocity_units.errors %}
+            <ul class="errors">
+                {% for error in form.velocity_units.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {{ form.final_velocity_units.label }}
+            {{ form.final_velocity_units(size=1) }}
+            {% if form.final_velocity_units.errors %}
+            <ul class="errors">
+                {% for error in form.final_velocity_units.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
         </div>
+        <br />
         <div>
             {{ form.initial_height.label }}
             {{ form.initial_height(size=20) }}
@@ -29,18 +49,38 @@
                 {% endfor %}
             </ul>
             {% endif %}
+            {{ form.metric_or_imperial.label }}
+                {{ form.metric_or_imperial(size=1) }}
+                {% if form.metric_or_imperial.errors %}
+                <ul class="errors">
+                    {% for error in form.metric_or_imperial.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {{ form.final_metric_or_imperial.label }}
+                {{ form.final_metric_or_imperial(size=1) }}
+                {% if form.final_metric_or_imperial.errors %}
+                <ul class="errors">
+                    {% for error in form.final_metric_or_imperial.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
         <div>
-            {{ form.rad_or_deg.label }}
-            {{ form.rad_or_deg(size=1) }}
-            {% if form.rad_or_deg.errors %}
+            {{ form.final_surface_height.label }}
+            {{ form.final_surface_height(size=20) }}
+            {% if form.final_surface_height.errors %}
             <ul class="errors">
-                {% for error in form.rad_or_deg.errors %}
+                {% for error in form.final_surface_height.errors %}
                     <li>{{ error }}</li>
                 {% endfor %}
             </ul>
             {% endif %}
-
+        </div>
+        <br />
+        <div>
             {{ form.launch_angle.label }}
             {{ form.launch_angle(size=20) }}
             {% if form.launch_angle.errors %}
@@ -50,20 +90,55 @@
                 {% endfor %}
             </ul>
             {% endif %}
+            {{ form.rad_or_deg.label }}
+                {{ form.rad_or_deg(size=1) }}
+                {% if form.rad_or_deg.errors %}
+                <ul class="errors">
+                    {% for error in form.rad_or_deg.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {{ form.final_rad_or_deg.label }}
+                {{ form.final_rad_or_deg(size=1) }}
+                {% if form.final_rad_or_deg.errors %}
+                <ul class="errors">
+                    {% for error in form.final_rad_or_deg.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
+        <br />
         <div>
             {{ form.submit }}
         </div>
     </form>
     <div class="solutions">
-        {% if v_ox %}
-            Initial X Velocity: {{ v_ox }} m/s
-            Initial Y Velocity: {{ v_oy }} m/s
-            Time to Peak of Motion: {{ peak_time }} s
-            Height at Peak of Motion: {{ peak_height }} m
-            Total Time of Travel: {{ total_time }} s
-            Final Horizontal Distance Traveled {{ final_dist }} m
+        <br />
+        <br />
+        {% if form.initial_velocity.data %}
+            <h2>Data Input:</h2>
+            Initial velocity: {{ v_o }} {{ final_vel_units }}, or {{ form.initial_velocity.data }} {{ form.velocity_units.data }}<br />
+            Initial height: {{ y_o }} {{ final_dist_units }}, or {{ form.initial_height.data }} {{ form.metric_or_imperial.data }}<br />
+            Final height: {{ final_height }} {{ final_dist_units }}, or {{ form.final_surface_height.data }} {{ form.metric_or_imperial.data }}<br />
+            Launch angle: {{ launch_angle }} {{ final_deg_units }}, or {{ form.launch_angle.data }} {{ form.rad_or_deg.data }}<br />
         {% endif %}
+
+        {% if valid_final_height == False %}
+            Entered final height was higher than the peak point, and thus a projectile would
+            never reach it. As such, we completed the calculation with a final height of zero
+        {% endif %}
+        <br />
+        <h2>Results:</h2>
+        Initial X Velocity: {{ v_ox }} {{ final_vel_units }} <br />
+        Initial Y Velocity: {{ v_oy }} {{ final_vel_units }} <br />
+        Time to Peak of Motion: {{ peak_time }} {{ time_units }}<br />
+        Height at Peak of Motion: {{ peak_height }} {{ final_dist_units }} <br />
+        Distance traveled at Peak of Motion: {{ peak_distance }} {{ final_dist_units }}<br />
+        Total Time of Travel: {{ total_time }} {{ time_units }} <br />
+        Final Horizontal Distance Traveled {{ final_dist }} {{ final_dist_units }} <br />
+
     </div>
 </body>
 </html>
