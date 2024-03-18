@@ -14,7 +14,8 @@ def home():
 
 @app.route('/basic-kinematics', methods=['GET', 'POST'])
 def do_kinematics():
-    form = VelocityAngleHeight()
+    form = VelocityAngleHeight(metric_or_imperial='m', velocity_units='m/s', rad_or_deg='deg',
+                               final_metric_or_imperial='m', final_velocity_units='m/s', final_rad_or_deg='deg')
     if form.validate_on_submit():
         initial_velocity = form.initial_velocity.data
         initial_height = form.initial_height.data
@@ -76,10 +77,6 @@ def do_kinematics():
 
     return render_template('kinematics.html', form=form)
 
-
-@app.route('/calculus', methods=['GET', 'POST'])
-def calculus_math():
-    return "calc"
 
 
 if __name__ == '__main__':
