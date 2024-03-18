@@ -2,116 +2,136 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Home</title>
 </head>
 <body>
     <h1>Welcome</h1>
-    <form method="POST" action="/calculate">
+
+    <form method="POST" action="/basic-calculations">
         {{ form.csrf_token }}
         <h2>Parameters and Units</h2>
-        <div>
-            {{ form.initial_velocity.label }}
-            {{ form.initial_velocity(size=20) }}
-            {% if form.initial_velocity.errors %}
-            <ul class="errors">
-                {% for error in form.initial_velocity.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        {{ form.velocity_units.label }}
-            {{ form.velocity_units(size=1) }}
-            {% if form.velocity_units.errors %}
-            <ul class="errors">
-                {% for error in form.velocity_units.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            {{ form.final_velocity_units.label }}
-            {{ form.final_velocity_units(size=1) }}
-            {% if form.final_velocity_units.errors %}
-            <ul class="errors">
-                {% for error in form.final_velocity_units.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
+        <div class="row">
+            <div class="col-sm-7 form-group">
+                {{ form.initial_velocity.label }}
+                {{ form.initial_velocity(class_='form-control', size=20) }}
+                {% if form.initial_velocity.errors %}
+                <ul class="errors">
+                    {% for error in form.initial_velocity.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <div class="col-sm form-group">
+                {{ form.velocity_units.label }}
+                {{ form.velocity_units(class_='form-control', size=1) }}
+                {% if form.velocity_units.errors %}
+                <ul class="errors">
+                    {% for error in form.velocity_units.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <div class="col-sm form-group">
+                {{ form.final_velocity_units.label }}
+                {{ form.final_velocity_units(class_='form-control', size=1) }}
+                {% if form.final_velocity_units.errors %}
+                <ul class="errors">
+                    {% for error in form.final_velocity_units.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
         </div>
-        <br />
-        <div>
-            {{ form.initial_height.label }}
-            {{ form.initial_height(size=20) }}
-            {% if form.initial_height.errors %}
-            <ul class="errors">
-                {% for error in form.initial_height.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            {{ form.metric_or_imperial.label }}
-                {{ form.metric_or_imperial(size=1) }}
+        <div class="row">
+            <div class="col-sm-7 form-group">
+                {{ form.initial_height.label }}
+                {{ form.initial_height(class_='form-control', size=20) }}
+                {% if form.initial_height.errors %}
+                <ul class="errors">
+                    {% for error in form.initial_height.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <div class="col-sm form-group">
+                {{ form.metric_or_imperial.label }}
+                {{ form.metric_or_imperial(class_='form-control', size=1) }}
                 {% if form.metric_or_imperial.errors %}
                 <ul class="errors">
                     {% for error in form.metric_or_imperial.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
-            {% endif %}
-            {{ form.final_metric_or_imperial.label }}
-                {{ form.final_metric_or_imperial(size=1) }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-7 form-group">
+                {{ form.final_surface_height.label }}
+                {{ form.final_surface_height(class_='form-control', size=20) }}
+                {% if form.final_surface_height.errors %}
+                <ul class="errors">
+                    {% for error in form.final_surface_height.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <div class="col-sm form-group">
+                {{ form.final_metric_or_imperial.label }}
+                {{ form.final_metric_or_imperial(class_='form-control', size=1) }}
                 {% if form.final_metric_or_imperial.errors %}
                 <ul class="errors">
                     {% for error in form.final_metric_or_imperial.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
-        <div>
-            {{ form.final_surface_height.label }}
-            {{ form.final_surface_height(size=20) }}
-            {% if form.final_surface_height.errors %}
-            <ul class="errors">
-                {% for error in form.final_surface_height.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        </div>
-        <br />
-        <div>
-            {{ form.launch_angle.label }}
-            {{ form.launch_angle(size=20) }}
-            {% if form.launch_angle.errors %}
-            <ul class="errors">
-                {% for error in form.launch_angle.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-            {{ form.rad_or_deg.label }}
-                {{ form.rad_or_deg(size=1) }}
+        <div class="row">
+            <div class="col-sm-7 form-group">
+                {{ form.launch_angle.label }}
+                {{ form.launch_angle(class_='form-control', size=20) }}
+                {% if form.launch_angle.errors %}
+                <ul class="errors">
+                    {% for error in form.launch_angle.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <div class="col-sm form-group">
+                {{ form.rad_or_deg.label }}
+                {{ form.rad_or_deg(class_='form-control', size=1) }}
                 {% if form.rad_or_deg.errors %}
                 <ul class="errors">
                     {% for error in form.rad_or_deg.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
-            {% endif %}
-            {{ form.final_rad_or_deg.label }}
-                {{ form.final_rad_or_deg(size=1) }}
+                {% endif %}
+            </div>
+            <div class="col-sm form-group">
+                {{ form.final_rad_or_deg.label }}
+                {{ form.final_rad_or_deg(class_='form-control', size=1) }}
                 {% if form.final_rad_or_deg.errors %}
                 <ul class="errors">
                     {% for error in form.final_rad_or_deg.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
-        <br />
         <div>
-            {{ form.submit }}
+            {{ form.submit(class_='form-control') }}
         </div>
     </form>
     <div class="solutions">
@@ -138,7 +158,45 @@
         Distance traveled at Peak of Motion: {{ peak_distance }} {{ final_dist_units }}<br />
         Total Time of Travel: {{ total_time }} {{ time_units }} <br />
         Final Horizontal Distance Traveled {{ final_dist }} {{ final_dist_units }} <br />
-
     </div>
+
+
+    <div style="height: 50vh; width: 50%;">
+        <canvas id="chart"></canvas>
+    </div>
+    <script>
+        {% if coords %}
+        const data = {
+            datasets: [{
+                label: 'Distance Traveled',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: {{ coords | tojson }}
+            }]
+        }
+
+        const config = {
+            type: 'scatter',
+            data: data,
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom'
+                    }
+                },
+                line: {
+                    showLine: true
+                }
+            }
+        };
+
+        const chart = new Chart(document.getElementById('chart'), config);
+        {% endif %}
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
 </body>
 </html>

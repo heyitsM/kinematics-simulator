@@ -1,5 +1,3 @@
-import math
-
 from flask import Flask, render_template
 from forms import VelocityAngleHeight
 import kinemath
@@ -8,12 +6,13 @@ import os
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32)
 
+
 @app.route('/')
-def hello_world():  # put application's code here
-    return 'Hello World!'
+def home():
+    return "hello world"
 
 
-@app.route('/calculate', methods=['GET', 'POST'])
+@app.route('/basic-calculations', methods=['GET', 'POST'])
 def do_math():
     form = VelocityAngleHeight()
     if form.validate_on_submit():
@@ -28,39 +27,42 @@ def do_math():
         final_metric_or_imperial = form.final_metric_or_imperial.data
         final_rad_or_deg = form.final_rad_or_deg.data
 
-        launch_angle = kinemath.convert_to_metric_seconds(launch_angle, rad_or_deg)
-        initial_velocity = kinemath.convert_to_metric_seconds(initial_velocity, velocity_units)
-        initial_height = kinemath.convert_to_metric_seconds(initial_height, metric_or_imperial)
-        final_height = kinemath.convert_to_metric_seconds(final_height, metric_or_imperial)
+        launch_angle = kinemath.basic.convert_to_metric_seconds(launch_angle, rad_or_deg)
+        initial_velocity = kinemath.basic.convert_to_metric_seconds(initial_velocity, velocity_units)
+        initial_height = kinemath.basic.convert_to_metric_seconds(initial_height, metric_or_imperial)
+        final_height = kinemath.basic.convert_to_metric_seconds(final_height, metric_or_imperial)
 
-        v_ox, v_oy = kinemath.calculate_initial_velocities(initial_velocity, launch_angle)
-        time_to_peak = kinemath.calculate_time_to_top(v_oy)
-        height_at_peak = kinemath.calculate_height_at_peak(initial_height, v_oy, time_to_peak)
-        x_distance_at_peak = kinemath.calculate_distance_at_peak(time_to_peak, v_ox)
+        v_ox, v_oy = kinemath.basic.calculate_initial_velocities(initial_velocity, launch_angle)
+        time_to_peak = kinemath.basic.calculate_time_to_top(v_oy)
+        height_at_peak = kinemath.basic.calculate_height_at_peak(initial_height, v_oy, time_to_peak)
+        x_distance_at_peak = kinemath.basic.calculate_distance_at_peak(time_to_peak, v_ox)
 
         if final_height <= height_at_peak:
-            time_from_peak_to_ground = kinemath.calculate_time_from_peak_to_final(height_at_peak, final_height)
+            time_from_peak_to_ground = kinemath.basic.calculate_time_from_peak_to_final(height_at_peak, final_height)
             valid_final_height = True
         else:
-            time_from_peak_to_ground = kinemath.calculate_time_from_peak_to_final(height_at_peak, 0)
+            time_from_peak_to_ground = kinemath.basic.calculate_time_from_peak_to_final(height_at_peak, 0)
             valid_final_height = False
 
         total_time = time_to_peak + time_from_peak_to_ground
-        x_distance_traveled = kinemath.get_total_x_distance(total_time, v_ox)
+        x_distance_traveled = kinemath.basic.get_total_x_distance(total_time, v_ox)
 
-        initial_velocity = kinemath.convert_from_metric_seconds(initial_velocity, final_velocity_units)
-        initial_height = kinemath.convert_from_metric_seconds(initial_height, final_metric_or_imperial)
-        final_height = kinemath.convert_from_metric_seconds(final_height, final_metric_or_imperial)
-        launch_angle = kinemath.convert_from_metric_seconds(launch_angle, final_rad_or_deg)
+        initial_velocity = kinemath.basic.convert_from_metric_seconds(initial_velocity, final_velocity_units)
+        initial_height = kinemath.basic.convert_from_metric_seconds(initial_height, final_metric_or_imperial)
+        final_height = kinemath.basic.convert_from_metric_seconds(final_height, final_metric_or_imperial)
+        launch_angle = kinemath.basic.convert_from_metric_seconds(launch_angle, final_rad_or_deg)
 
-        v_ox = kinemath.convert_from_metric_seconds(v_ox, final_velocity_units)
-        v_oy = kinemath.convert_from_metric_seconds(v_oy, final_velocity_units)
-        height_at_peak = kinemath.convert_from_metric_seconds(height_at_peak, final_metric_or_imperial)
-        x_distance_at_peak = kinemath.convert_from_metric_seconds(x_distance_at_peak, final_metric_or_imperial)
-        x_distance_traveled = kinemath.convert_from_metric_seconds(x_distance_traveled, final_metric_or_imperial)
+        v_ox = kinemath.basic.convert_from_metric_seconds(v_ox, final_velocity_units)
+        v_oy = kinemath.basic.convert_from_metric_seconds(v_oy, final_velocity_units)
+        height_at_peak = kinemath.basic.convert_from_metric_seconds(height_at_peak, final_metric_or_imperial)
+        x_distance_at_peak = kinemath.basic.convert_from_metric_seconds(x_distance_at_peak, final_metric_or_imperial)
+        x_distance_traveled = kinemath.basic.convert_from_metric_seconds(x_distance_traveled, final_metric_or_imperial)
 
-        time_to_peak = kinemath.convert_time(time_to_peak, final_velocity_units)
-        total_time = kinemath.convert_time(total_time, final_velocity_units)
+        time_to_peak = kinemath.basic.convert_time(time_to_peak, final_velocity_units)
+        total_time = kinemath.basic.convert_time(total_time, final_velocity_units)
+
+        coords = kinemath.graphing.generate_coordinates(initial_height, 0,
+                                                      v_oy, v_ox, total_time[0], total_time[0] / 1000)
 
         return render_template('main.html', form=form, v_o=initial_velocity, y_o=initial_height,
                                final_height=final_height, valid_final_height=valid_final_height,
@@ -69,9 +71,16 @@ def do_math():
                                total_time=total_time[0], final_dist=x_distance_traveled,
                                vel_units=velocity_units, dist_units=metric_or_imperial, deg_units=rad_or_deg,
                                final_vel_units=final_velocity_units, final_dist_units=final_metric_or_imperial,
-                               final_deg_units=final_rad_or_deg, time_units=total_time[1])
+                               final_deg_units=final_rad_or_deg, time_units=total_time[1],
+                               coords=coords)
 
     return render_template('main.html', form=form)
+
+
+@app.route('/calculus', methods=['GET', 'POST'])
+def calculus_math():
+    return "calc"
+
 
 if __name__ == '__main__':
     app.run()
