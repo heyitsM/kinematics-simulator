@@ -35,3 +35,4 @@ class VelocityAngleHeight(FlaskForm):
     initial_height = FloatField('Initial Height', validators=[number_range(0)])
     final_surface_height = FloatField('Final Height', validators=[number_range(0)])
     submit = SubmitField('Submit')
+

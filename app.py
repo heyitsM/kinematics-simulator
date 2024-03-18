@@ -9,11 +9,11 @@ app.config['SECRET_KEY'] = os.urandom(32)
 
 @app.route('/')
 def home():
-    return "hello world"
+    return render_template('main.html')
 
 
-@app.route('/basic-calculations', methods=['GET', 'POST'])
-def do_math():
+@app.route('/basic-kinematics', methods=['GET', 'POST'])
+def do_kinematics():
     form = VelocityAngleHeight()
     if form.validate_on_submit():
         initial_velocity = form.initial_velocity.data
@@ -64,7 +64,7 @@ def do_math():
         coords = kinemath.graphing.generate_coordinates(initial_height, 0,
                                                       v_oy, v_ox, total_time[0], total_time[0] / 1000)
 
-        return render_template('main.html', form=form, v_o=initial_velocity, y_o=initial_height,
+        return render_template('kinematics.html', form=form, v_o=initial_velocity, y_o=initial_height,
                                final_height=final_height, valid_final_height=valid_final_height,
                                launch_angle=launch_angle, v_ox=v_ox, v_oy=v_oy,
                                peak_time=time_to_peak[0], peak_height=height_at_peak, peak_distance=x_distance_at_peak,
@@ -72,9 +72,9 @@ def do_math():
                                vel_units=velocity_units, dist_units=metric_or_imperial, deg_units=rad_or_deg,
                                final_vel_units=final_velocity_units, final_dist_units=final_metric_or_imperial,
                                final_deg_units=final_rad_or_deg, time_units=total_time[1],
-                               coords=coords)
+                               coords=coords, scroll='solutions')
 
-    return render_template('main.html', form=form)
+    return render_template('kinematics.html', form=form)
 
 
 @app.route('/calculus', methods=['GET', 'POST'])
