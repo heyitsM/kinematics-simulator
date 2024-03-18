@@ -3,9 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome - A Physics Simulator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-    Hello world
-    <a href='{{ url_for('do_kinematics') }}'>Basic Kinematics Calculator</a>
+    <div class="ms-3 me-5 mt-3">
+        <H1>Welcome to A Physics Simulator!</H1>
+        <p class="lead">Hello. This is A Physics Simulator, a website that does quick highschool physics level calculations
+            and implements graphical representations of them. For now, only a kinematics simulator has been implemented,
+            but in the future, I am looking to implement more simulation/calculator options! Feel free to let me know if you
+        have any suggestions, by heading over to the repository and opening an issue.</p>
+
+        <h3>Tools</h3>
+        <a class="icon-link" href='{{ url_for('do_kinematics') }}'>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud" viewBox="0 0 16 16">
+                <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383m.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+            </svg>
+            Basic Kinematics Calculator
+
+        </a>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
