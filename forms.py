@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import FloatField, SubmitField, SelectField
-from wtforms.validators import data_required, number_range
+from wtforms.validators import input_required, data_required, number_range
 
 
 class VelocityAngleHeight(FlaskForm):
@@ -37,14 +37,14 @@ class VelocityAngleHeight(FlaskForm):
     submit = SubmitField('Submit')
 
 class TwoPointsLine(FlaskForm):
-    x_1 = FloatField('X1 coordinate', validators=[data_required()])
-    y_1 = FloatField('Y1 coordinate', validators=[data_required()])
-    x_2 = FloatField('X2 coordinate', validators=[data_required()])
-    y_2 = FloatField('Y2 coordinate', validators=[data_required()])
+    x_1 = FloatField('X1 coordinate', validators=[input_required()])
+    y_1 = FloatField('Y1 coordinate', validators=[input_required()])
+    x_2 = FloatField('X2 coordinate', validators=[input_required()])
+    y_2 = FloatField('Y2 coordinate', validators=[input_required()])
     submitT = SubmitField('Submit')
 
 class PointSlope(FlaskForm):
-    x = FloatField('X coordinate', validators=[data_required()])
-    y = FloatField('Y coordinate', validators=[data_required()])
-    m = FloatField('Slope', validators=[data_required()])
+    x = FloatField('X coordinate', validators=[input_required()])
+    y = FloatField('Y coordinate', validators=[input_required()])
+    m = FloatField('Slope', validators=[input_required()])
     submitP = SubmitField('Submit')

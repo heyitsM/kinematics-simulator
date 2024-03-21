@@ -121,29 +121,63 @@
         </div>
     </div>
 
-
-    {% if point_2 %}
-        <div class="solutions row ms-3 me-5 mt-3">
-            <div class="col">
+    <div id="solutions" class="row ms-3 me-5 mt-3">
+        <div class="col">
+            {% if point %}
+                <h2>Data Input and Results</h2>
+                Point: ({{ point|join(', ') }}) <br />
+                Slope: {{ slope }} <br />
+                X-Intercept: ({{ x_int|join(', ') }})<br />
+                Y-Intercept: ({{ y_int|join(', ') }})<br />
+            {% elif point_2 %}
+                <h2>Data Input and Results</h2>
                 First point: ({{ point_1|join(', ') }}) <br />
                 Second point: ({{ point_2|join(', ') }}) <br />
                 Slope: {{ slope }} <br />
                 X-Intercept: ({{ x_int|join(', ') }})<br />
                 Y-Intercept: ({{ y_int|join(', ') }})<br />
-
+            {% endif %}
+        </div>
+        <div class="col">
+            <div style="height: 100%; width: 100%;">
+                <canvas id="chart"></canvas>
             </div>
         </div>
-    {% endif %}
-    {% if point %}
-        <div class="solutions row ms-3 me-5 mt-3">
-            <div class="col">
-                Point: ({{ point|join(', ') }}) <br />
-                Slope: {{ slope }} <br />
-                X-Intercept: ({{ x_int|join(', ') }})<br />
-                Y-Intercept: ({{ y_int|join(', ') }})<br />
+    </div>
 
-            </div>
-        </div>
-    {% endif %}
+    <script>
+        {% if coords %}
+            const data = {
+                datasets: [{
+                    label: 'Line Graph',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: {{ coords | tojson }},
 
+                }]
+            }
+
+            const config = {
+                type: 'scatter',
+                data: data,
+                options: {
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom'
+                        }
+                    },
+                    line: {
+                        showLine: true
+                    },
+
+                }
+            };
+
+            const chart = new Chart(document.getElementById('chart'), config);
+        {% endif %}
+        {% if scroll %}
+            document.getElementById('{{ scroll }}').scrollIntoView();
+        {% endif %}
+    </script>
 {% endblock %}

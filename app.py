@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from forms import VelocityAngleHeight, TwoPointsLine, PointSlope
 import kinemath
 import os
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32)
@@ -64,7 +65,9 @@ def do_kinematics():
 
         coords = kinemath.graphing.generate_coordinates(initial_height, 0,
                                                       v_oy, v_ox, total_time[0], total_time[0] / 1000)
-
+        print(type(coords))
+        print(type(coords[0]))
+        print(type(coords[0]['x']))
         return render_template('kinematics.html', form=form, v_o=initial_velocity, y_o=initial_height,
                                final_height=final_height, valid_final_height=valid_final_height,
                                launch_angle=launch_angle, v_ox=v_ox, v_oy=v_oy,
@@ -78,7 +81,7 @@ def do_kinematics():
     return render_template('kinematics.html', form=form)
 
 @app.route('/line-equation', methods=['GET', 'POST'])
-def equation():
+def line_equation():
     formT = TwoPointsLine()
     formP = PointSlope()
 
@@ -88,19 +91,22 @@ def equation():
         slope = kinemath.linear.slope(point_1, point_2)
         y_intercept = kinemath.linear.y_intercept(slope, point_1)
         x_intercept = kinemath.linear.x_intercept(slope, y_intercept)
+        coords = kinemath.linear.generate_data(slope, y_intercept, x_intercept)
 
         return render_template('line_equations.html', point_1=point_1,
                                point_2=point_2, slope=slope, form=formT, form2=formP, y_int=y_intercept,
-                               x_int=x_intercept)
+                               x_int=x_intercept, coords=coords, scroll='solutions')
 
     if formP.submitP.data and formP.validate_on_submit():
         point_1 = (formP.x.data, formP.y.data)
         slope = formP.m.data
         y_intercept = kinemath.linear.y_intercept(slope, point_1)
         x_intercept = kinemath.linear.x_intercept(slope, y_intercept)
+        coords = kinemath.linear.generate_data(slope, y_intercept, x_intercept)
 
-        return render_template('line_equations.html', point=point_1,
-                               slope=slope, form=formT, form2=formP, y_int=y_intercept, x_int=x_intercept)
+        return render_template('line_equations.html', point=point_1, slope=slope, form=formT, form2=formP,
+                               y_int=y_intercept, x_int=x_intercept, coords=coords, scroll='solutions')
+
     return render_template('line_equations.html', form=formT, form2=formP)
 
 
