@@ -36,3 +36,15 @@ class VelocityAngleHeight(FlaskForm):
     final_surface_height = FloatField('Final Height', validators=[number_range(0)])
     submit = SubmitField('Submit')
 
+class TwoPointsLine(FlaskForm):
+    x_1 = FloatField('X1 coordinate', validators=[data_required()])
+    y_1 = FloatField('Y1 coordinate', validators=[data_required()])
+    x_2 = FloatField('X2 coordinate', validators=[data_required()])
+    y_2 = FloatField('Y2 coordinate', validators=[data_required()])
+    submitT = SubmitField('Submit')
+
+class PointSlope(FlaskForm):
+    x = FloatField('X coordinate', validators=[data_required()])
+    y = FloatField('Y coordinate', validators=[data_required()])
+    m = FloatField('Slope', validators=[data_required()])
+    submitP = SubmitField('Submit')

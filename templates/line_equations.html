@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block title %} Equation for a Line {% endblock %}
+{% block displayTitle %} Equation for a Line {% endblock %}
+
+{% block body %}
+    <div class="row ms-3 me-5 mt-3">
+        <p class="lead">
+            This calculator uses either a combination of two points, or a point and a given slope, calculates the
+            equation of the line, and graphs it, along with giving important points.
+        </p>
+    </div>
+
+    <div class="row ms-3 me-5 mt-3">
+        <div class="col">
+            <form method="POST" action="/line-equation">
+                {{ form.csrf_token }}
+                <h2>Parameters: 2 Points</h2>
+                <p class="lead">
+                    With this solver, plug in two points (x1, y1) and (x2, y2) to get line information and a
+                    graphical representation.
+                </p>
+                <div class="row mb-3">
+                    <div class="col form-group">
+                        {{ form.x_1.label }}
+                        {{ form.x_1(class_='form-control', size=20) }}
+                        {% if form.x_1.errors %}
+                        <ul class="errors">
+                            {% for error in form.x_1.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <div class="col form-group">
+                        {{ form.y_1.label }}
+                        {{ form.y_1(class_='form-control', size=20) }}
+                        {% if form.y_1.errors %}
+                        <ul class="errors">
+                            {% for error in form.y_1.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col form-group">
+                        {{ form.x_2.label }}
+                        {{ form.x_2(class_='form-control', size=20) }}
+                        {% if form.x_2.errors %}
+                        <ul class="errors">
+                            {% for error in form.x_2.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <div class="col form-group">
+                        {{ form.y_2.label }}
+                        {{ form.y_2(class_='form-control', size=20) }}
+                        {% if form.y_2.errors %}
+                        <ul class="errors">
+                            {% for error in form.y_2.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                {{ form.submitT }}
+            </form>
+        </div>
+        <div class="col">
+            <form method="POST" action="/line-equation">
+                {{ form.csrf_token }}
+                <h2>Parameters: Point and Line</h2>
+                <p class="lead">
+                    With this solver, plug in one point (x, y) and slope m to get line information and a
+                    graphical representation.
+                </p>
+                <div class="row mb-3">
+                    <div class="col form-group">
+                        {{ form2.x.label }}
+                        {{ form2.x(class_='form-control', size=20) }}
+                        {% if form2.x.errors %}
+                        <ul class="errors">
+                            {% for error in form2.x.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <div class="col form-group">
+                        {{ form2.y.label }}
+                        {{ form2.y(class_='form-control', size=20) }}
+                        {% if form2.y.errors %}
+                        <ul class="errors">
+                            {% for error in form2.y.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col form-group">
+                        {{ form2.m.label }}
+                        {{ form2.m(class_='form-control', size=20) }}
+                        {% if form2.m.errors %}
+                        <ul class="errors">
+                            {% for error in form2.m.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                {{ form2.submitP }}
+            </form>
+        </div>
+    </div>
+
+
+    {% if point_2 %}
+        <div class="solutions row ms-3 me-5 mt-3">
+            <div class="col">
+                First point: ({{ point_1|join(', ') }}) <br />
+                Second point: ({{ point_2|join(', ') }}) <br />
+                Slope: {{ slope }} <br />
+                X-Intercept: ({{ x_int|join(', ') }})<br />
+                Y-Intercept: ({{ y_int|join(', ') }})<br />
+
+            </div>
+        </div>
+    {% endif %}
+    {% if point %}
+        <div class="solutions row ms-3 me-5 mt-3">
+            <div class="col">
+                Point: ({{ point|join(', ') }}) <br />
+                Slope: {{ slope }} <br />
+                X-Intercept: ({{ x_int|join(', ') }})<br />
+                Y-Intercept: ({{ y_int|join(', ') }})<br />
+
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

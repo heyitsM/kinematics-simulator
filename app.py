@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from forms import VelocityAngleHeight
+from forms import VelocityAngleHeight, TwoPointsLine, PointSlope
 import kinemath
 import os
 
@@ -77,6 +77,31 @@ def do_kinematics():
 
     return render_template('kinematics.html', form=form)
 
+@app.route('/line-equation', methods=['GET', 'POST'])
+def equation():
+    formT = TwoPointsLine()
+    formP = PointSlope()
+
+    if formT.submitT.data and formT.validate_on_submit():
+        point_1 = (formT.x_1.data, formT.y_1.data)
+        point_2 = (formT.x_2.data, formT.y_2.data)
+        slope = kinemath.linear.slope(point_1, point_2)
+        y_intercept = kinemath.linear.y_intercept(slope, point_1)
+        x_intercept = kinemath.linear.x_intercept(slope, y_intercept)
+
+        return render_template('line_equations.html', point_1=point_1,
+                               point_2=point_2, slope=slope, form=formT, form2=formP, y_int=y_intercept,
+                               x_int=x_intercept)
+
+    if formP.submitP.data and formP.validate_on_submit():
+        point_1 = (formP.x.data, formP.y.data)
+        slope = formP.m.data
+        y_intercept = kinemath.linear.y_intercept(slope, point_1)
+        x_intercept = kinemath.linear.x_intercept(slope, y_intercept)
+
+        return render_template('line_equations.html', point=point_1,
+                               slope=slope, form=formT, form2=formP, y_int=y_intercept, x_int=x_intercept)
+    return render_template('line_equations.html', form=formT, form2=formP)
 
 
 if __name__ == '__main__':
