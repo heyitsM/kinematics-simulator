@@ -1,0 +1,7 @@
+body {
+    opacity: 0;
+    transition: opacity 1s;
+    -webkit-transition: opacity 1s;
+    background: #1d1d26;
+    color: #cecaad;
+}

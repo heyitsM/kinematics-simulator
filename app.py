@@ -112,7 +112,7 @@ def line_equation():
 
 
 @app.route('/credits')
-def credits():
+def credit():
     return render_template('credits.html')
 
 
