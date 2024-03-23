@@ -80,6 +80,7 @@ def do_kinematics():
 
     return render_template('kinematics.html', form=form)
 
+
 @app.route('/line-equation', methods=['GET', 'POST'])
 def line_equation():
     formT = TwoPointsLine()
@@ -108,6 +109,11 @@ def line_equation():
                                y_int=y_intercept, x_int=x_intercept, coords=coords, scroll='solutions')
 
     return render_template('line_equations.html', form=formT, form2=formP)
+
+
+@app.route('/credits')
+def credits():
+    return render_template('credits.html')
 
 
 if __name__ == '__main__':
