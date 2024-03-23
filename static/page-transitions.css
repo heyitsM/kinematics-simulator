@@ -5,3 +5,16 @@ body {
     background: #1d1d26;
     color: #cecaad;
 }
+
+input[type='text'], input[type="submit"] {
+    background-color:  #cecaad;
+}
+
+input[type='text']:focus {
+    background-color: #cbc8bf;
+}
+
+select, select option{
+    background-color: #cecaad;
+    border-color: #cecaad;
+}
